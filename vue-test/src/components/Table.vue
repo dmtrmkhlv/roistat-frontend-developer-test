@@ -18,7 +18,7 @@
                 <div class="table__row__item">+7 941 125-14-15</div>
             </div>
              <div class="table__row">
-                <div class="table__row__item"><span>+ </span>Иван</div>
+                <div class="table__row__item level"><span>+ </span>Иван</div>
                 <div class="table__row__item">+7 941 125-14-15</div>
             </div>
              <div class="table__row">
@@ -60,5 +60,8 @@ export default {
     margin-bottom: -1px;
     padding: 5px 15px;
     text-align: left;
+}
+.table__row__item.level{
+    width: 45%;
 }
 </style>
