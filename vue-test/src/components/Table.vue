@@ -20,8 +20,8 @@ export default {
         ContactCard,
       },
     computed:{
-            contacts(){
-            return this.$store.getters.getContacts;
+        contacts(){
+            return this.$store.getters.getAllContactToOneLevel;
         }
     }
 }

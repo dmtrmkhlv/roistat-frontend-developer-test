@@ -44,7 +44,7 @@ export default {
         },
         computed:{
             contacts(){
-                return this.$store.getters.getContacts;
+                return this.$store.getters.getAllContactToOneLevel;
             }
          },
     methods: {
@@ -53,7 +53,8 @@ export default {
                 id: this.id,
                 name: this.name,
                 phone: this.phone,
-                chiefId: this.chiefId
+                chiefId: this.chiefId, 
+                sub: []
             }
             this.$store.dispatch('addToContacts', dataFromForm);
             this.id = nanoid();
