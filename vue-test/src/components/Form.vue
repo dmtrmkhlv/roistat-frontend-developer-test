@@ -4,16 +4,16 @@
         <p>Добавление пользователя</p>
         <div class="form__block">
             <label for="name">Имя</label>
-            <input type="text" name="name" id="name">
+            <input v-model="name" type="text" name="name" id="name">
         </div>
         <div class="form__block">
             <label for="phone">Телефон</label>
-            <input type="phone" name="phone" id="phone">
+            <input v-model="phone" type="phone" name="phone" id="phone">
             </div>
         <div class="form__block">
             <label for="chief">Начальник</label>
-            <select name="chief" id="chief">
-                <option value="1">1</option>
+            <select v-model="chief" name="chief" id="chief">
+                <option value="chief"></option>
             </select>
         </div>
         <Button class="form__button"  :buttonFunction="onSubmit" type="submit" text="Сохранить"/>
@@ -24,15 +24,35 @@
 
 <script>
   import Button from '@/components/Button.vue'
+  import { nanoid } from 'nanoid'
 
 export default {
     props: ['buttonFunction'],
      components: {
         Button,
       },
+    data() {
+        return {
+            id: nanoid(),
+            name: '',
+            phone: '',
+            chief: '',
+            }
+        },
+
     methods: {
         onSubmit() {
-            console.log("onSubmit")
+            let dataFromForm = {
+                id: this.id,
+                name: this.name,
+                phone: this.phone,
+                chief: this.chief
+            }
+            this.$store.dispatch('addToContacts', dataFromForm);
+            this.id = nanoid();
+            this.name = '';
+            this.phone = '';
+            this.chief = '';
         },
         onClick(){
             this.buttonFunction();

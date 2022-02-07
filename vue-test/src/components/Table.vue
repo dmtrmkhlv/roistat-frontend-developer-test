@@ -5,38 +5,29 @@
             <div class="table__row__item">Телефон</div>
         </div>
         <div class="table__box">
-            <div class="table__row">
-                <div class="table__row__item">Марина</div>
-                <div class="table__row__item">+7 941 125-14-15</div>
-            </div>
-            <div class="table__row">
-                <div class="table__row__item">Петр</div>
-                <div class="table__row__item">+7 941 125-14-15</div>
-            </div>
-             <div class="table__row">
-                <div class="table__row__item"><span>+ </span>Алексей</div>
-                <div class="table__row__item">+7 941 125-14-15</div>
-            </div>
-             <div class="table__row">
-                <div class="table__row__item level"><span>+ </span>Иван</div>
-                <div class="table__row__item">+7 941 125-14-15</div>
-            </div>
-             <div class="table__row">
-                <div class="table__row__item">Борис</div>
-                <div class="table__row__item">+7 941 125-14-15</div>
-            </div>
+            <ContactCard v-for="contact of contacts"
+            v-bind:key="contact.id" 
+            v-bind:data="contact" />
         </div>
     </div>
 </template>
 
 <script>
+import ContactCard from '@/components/ContactCard.vue'
 
 export default {
-
+     components: {
+        ContactCard,
+      },
+    computed:{
+            contacts(){
+            return this.$store.getters.getContacts;
+        }
     }
+}
 </script>
 
-<style scoped>
+<style>
 .table{
     margin-top: 30px;
     width: 100%;
