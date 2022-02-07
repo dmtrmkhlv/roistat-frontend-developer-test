@@ -12,8 +12,11 @@
             </div>
         <div class="form__block">
             <label for="chief">Начальник</label>
-            <select v-model="chief" name="chief" id="chief">
-                <option value="chief"></option>
+            <select v-model="chiefId" name="chief" id="chief">
+                <option v-for="contact of contacts"
+            v-bind:key="contact.id" 
+            v-bind:value="contact.id"
+            >{{contact.name}}</option>
             </select>
         </div>
         <Button class="form__button"  :buttonFunction="onSubmit" type="submit" text="Сохранить"/>
@@ -36,23 +39,27 @@ export default {
             id: nanoid(),
             name: '',
             phone: '',
-            chief: '',
+            chiefId: '',
             }
         },
-
+        computed:{
+            contacts(){
+                return this.$store.getters.getContacts;
+            }
+         },
     methods: {
         onSubmit() {
             let dataFromForm = {
                 id: this.id,
                 name: this.name,
                 phone: this.phone,
-                chief: this.chief
+                chiefId: this.chiefId
             }
             this.$store.dispatch('addToContacts', dataFromForm);
             this.id = nanoid();
             this.name = '';
             this.phone = '';
-            this.chief = '';
+            this.chiefId = '';
         },
         onClick(){
             this.buttonFunction();

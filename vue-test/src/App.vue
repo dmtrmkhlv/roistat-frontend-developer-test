@@ -8,9 +8,6 @@
 
 export default ({
   name: 'App',
-  mounted() {
-    this.$store.dispatch('fetchContacts')
-  }
 })
 </script>
 
