@@ -1,8 +1,8 @@
 <template>
     <div class="table">
         <div class="table__row">
-            <div class="table__row__item">Имя</div>
-            <div class="table__row__item">Телефон</div>
+            <div v-on:click="sortContacts('name')" class="table__row__item button">Имя</div>
+            <div v-on:click="sortContacts('phone')" class="table__row__item button">Телефон</div>
         </div>
         <div class="table__box">
             <ContactCard v-for="contact of contacts"
@@ -19,10 +19,30 @@ export default {
      components: {
         ContactCard,
       },
+    data() {
+        return {
+            nameSortByAsc: 1,
+            phoneSortByAsc: 1
+        }
+    },
     computed:{
         contacts(){
             return this.$store.getters.getAllContactToOneLevel;
-        }
+        },
+    },
+    methods:{
+        sortContacts(by){
+            let nameSortByAsc = this.nameSortByAsc;
+            let phoneSortByAsc = this.phoneSortByAsc;
+            if(by === "name"){
+                this.$store.commit('setSortOrder', {'by': by, 'asc': nameSortByAsc});
+                this.nameSortByAsc = -this.nameSortByAsc;
+            }
+            if(by === "phone"){
+                this.$store.commit('setSortOrder', {'by': by, 'asc': phoneSortByAsc});
+                this.phoneSortByAsc = -this.phoneSortByAsc;
+            }
+        },
     }
 }
 </script>
@@ -37,7 +57,9 @@ export default {
     justify-content: flex-end;
     width: 100%;
 }
-
+.button{
+    cursor: pointer;
+}
 .table__row .table__row__item:last-child{
     max-width: 50%;
 }

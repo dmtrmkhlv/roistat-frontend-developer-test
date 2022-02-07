@@ -12,7 +12,8 @@ Vue.config.devtools = true
 
 export const store = new Vuex.Store({
   state: {
-    contacts: []
+    contacts: [],
+    sortOrder: {},
   },
   getters: {
     getContacts(state) {
@@ -20,6 +21,24 @@ export const store = new Vuex.Store({
     },
     getAllContactToOneLevel(state) {
       let contacts = [...state.contacts];
+      const sortContactsInAllLevel = (array) => {
+        array.sort(function (a, b) {
+            if (a[state.sortOrder.by] > b[state.sortOrder.by]) {
+              return state.sortOrder.asc;
+            }
+            if (a[state.sortOrder.by] < b[state.sortOrder.by]) {
+              return -state.sortOrder.asc;
+            }
+            return 0;
+          });
+        array.forEach(elem => {
+          if (elem.sub.length > 0) {
+            sortContactsInAllLevel(elem.sub)
+          }
+        });
+      }
+      sortContactsInAllLevel(contacts);
+
       let newContacts = [];
       const getAllContactToOneLevel = (array, margin) => {
         array.forEach(elem => {
@@ -32,9 +51,12 @@ export const store = new Vuex.Store({
       }
       getAllContactToOneLevel(contacts, 0);
       return newContacts;
-    }
+    },
   },
   mutations: {
+    setSortOrder(state, payload){
+        state.sortOrder = payload;
+      },
     addContacts(state, payload) {
       state.contacts = [...payload];
     },
@@ -69,9 +91,7 @@ export const store = new Vuex.Store({
     }
   },
   actions: {
-    addToContacts({
-      commit
-    }, contact) {
+    addToContacts({commit}, contact) {
       commit('addToContacts', contact);
     }
   },
