@@ -5,11 +5,13 @@
         <div class="form__block">
             <label for="name">Имя</label>
             <input v-model="name" type="text" name="name" id="name">
+        <span class="form__error" v-if="errors.name">{{errors.name}}</span>
         </div>
         <div class="form__block">
             <label for="phone">Телефон</label>
-            <input v-model="phone" type="phone" name="phone" id="phone">
-            </div>
+            <input v-model="phone" type="number" name="phone" id="phone">
+        <span class="form__error" v-if="errors.phone">{{errors.phone}}</span>
+        </div>
         <div class="form__block">
             <label for="chief">Начальник</label>
             <select v-model="chiefId" name="chief" id="chief">
@@ -38,8 +40,12 @@ export default {
         return {
             id: nanoid(),
             name: '',
-            phone: '',
+            phone: "",
             chiefId: '',
+            errors: {
+                name: "",
+                phone: "",
+            },
             }
         },
         computed:{
@@ -49,6 +55,21 @@ export default {
          },
     methods: {
         onSubmit() {
+            this.errors = {};
+
+            if (this.name == "") {
+                this.errors.name  = 'Напишите имя';
+            }
+
+            if (this.phone == "") {
+                this.errors.phone = 'Напишите телефон';
+            }else if(this.phone.length != 11){
+                this.errors.phone = 'Не правильный формат';
+            }
+
+            if (!this.errors.length) {
+                return true;
+            }
             let dataFromForm = {
                 id: this.id,
                 name: this.name,
@@ -61,6 +82,7 @@ export default {
             this.name = '';
             this.phone = '';
             this.chiefId = '';
+            this.buttonFunction();
         },
         onClick(){
             this.buttonFunction();
@@ -104,6 +126,15 @@ export default {
 .form__block{
     width: 100%;
     display: flex;
+    position: relative;
+}
+.form__error{
+    color: orangered;
+    font-size: 12px;
+    line-height: 0;
+    position: absolute;
+    bottom: -12px;
+    right: 0;
 }
 label{
     text-align: left;
@@ -115,6 +146,11 @@ input,
 select{
     flex: 1;
     height: 25px;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 .form__button{
     align-self: flex-start;
